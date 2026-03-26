@@ -1,0 +1,248 @@
+
+SQL> select max(sal) as Highest_salary from employee1;
+
+HIGHEST_SALARY
+--------------
+          5000
+
+SQL> select min(sal) as lowest_salary from employee1;
+
+LOWEST_SALARY
+-------------
+          800
+
+SQL> select max(sal) as second_Highest_salary from employee1 where sal = (select max(sal) from employee1);
+
+SECOND_HIGHEST_SALARY
+---------------------
+                 5000
+
+SQL> select max(sal) as second_Highest_salary from employee1 where sal < (select max(sal) from employee1);
+
+SECOND_HIGHEST_SALARY
+---------------------
+                 3200
+
+SQL> select max(sal) as Third_Highest_salary from employee1 where sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1)));
+select max(sal) as Third_Highest_salary from employee1 where sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1)))
+                                                                                                                                                *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select max(sal) as Third_Highest_salary from employee1 where sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1));
+
+THIRD_HIGHEST_SALARY
+--------------------
+                3000
+
+SQL> set pagesize300 linesize300;
+SQL> select * from employee1;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+19 rows selected.
+
+SQL> select sal as second_lowest_sal from employee1 where sal > (select min(sal) from employee1 where sal >(select min(sal) from employee1));
+
+SECOND_LOWEST_SAL
+-----------------
+             2850
+             2450
+             1600
+             1250
+             2975
+             1250
+             3000
+             5000
+             1500
+             1100
+             3000
+             1300
+             3200
+             3200
+             3200
+
+15 rows selected.
+
+SQL> select sal as second_lowest_sal from employee1 where sal = (select min(sal) from employee1 where sal >(select min(sal) from employee1));
+
+SECOND_LOWEST_SAL
+-----------------
+              950
+
+SQL> select min(sal) from employee1 where sal > (select min(Sal) from employee1 where sal > (select min(sal) from employee1));
+
+  MIN(SAL)
+----------
+      1100
+
+SQL> select min(sal) from employee1 where sal > (select min(Sal) from employee1 where sal > (select min(sal) from employee1 where sal > (select min(sal) from employee1)));
+
+  MIN(SAL)
+----------
+      1250
+
+SQL> select * from employee1 where sal = (select max(sal) from employee1);
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+
+SQL> select * from employee1 where sal = (select max(sal) from employee1 where sal < (select max(sal) from employee1));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL> select * from employee1 where sal = (select min(sal) from employee1);
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+
+SQL> select * from employee1 where sal = (select min(sal) from employee1 where sal > (select min(sal) from employee1));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+
+SQL> select min(hiredate) from employee1;
+
+MIN(HIRED
+---------
+17-DEC-80
+
+SQL> select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1);
+
+MIN(HIRED
+---------
+20-FEB-81
+
+SQL> select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1));
+
+MIN(HIRED
+---------
+22-FEB-81
+
+SQL> select max(hiredate) from mployee1;
+select max(hiredate) from mployee1
+                          *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select max(hiredate) from employee1;
+
+MAX(HIRED
+---------
+15-MAR-83
+
+SQL> select max(hiredate) from employee1 where hiredate > (select max(hiredate) from emplyee1);
+select max(hiredate) from employee1 where hiredate > (select max(hiredate) from emplyee1)
+                                                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select max(hiredate) from employee1 where hiredate > (select max(hiredate) from emplyee1));
+select max(hiredate) from employee1 where hiredate > (select max(hiredate) from emplyee1))
+                                                                                         *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select max(hiredate) from employee1 where hiredate < (select max(hiredate) from emplyee1));
+select max(hiredate) from employee1 where hiredate < (select max(hiredate) from emplyee1))
+                                                                                         *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select max(hiredate) from employee1 where hiredate < (select max(hiredate) from emplyee1);
+select max(hiredate) from employee1 where hiredate < (select max(hiredate) from emplyee1)
+                                                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select max(hiredate) from employee1 where hiredate < (select max(hiredate) from employee1);
+
+MAX(HIRED
+---------
+12-JAN-83
+
+SQL> select max(hiredate) from employee1 where hiredate < (select max(hiredate) from employee1 where hiredate < (select max(hiredate) from employee1));
+
+MAX(HIRED
+---------
+09-DEC-82
+
+SQL> select max(hiredate) from employee1 where hiredate < (select max(hiredate) from employee1 where hiredate < (select max(hiredate) from employee1 where hiredate <(select max(hiredate) from employee1)));
+
+MAX(HIRED
+---------
+23-JAN-82
+
+SQL> select  from employee1 where hiredate = (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1));
+select  from employee1 where hiredate = (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1))
+        *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select  * from employee1 where hiredate = (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+
+SQL>SQL> select  * from employee1 where hiredate = (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1 where hiredate > (select min(hiredate) from employee1 )));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+
+
+
+SQL> select * from employee1 where hiredate = (select max(hiredate) from employee1);
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL>
+
+
+
+
+
+
+
+

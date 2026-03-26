@@ -1,0 +1,601 @@
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Wed Mar 25 11:02:00 2026
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> CONN
+Enter user-name: vijay
+Enter password:
+Connected.
+SQL> set pagesiz300 linesize300;
+SQL> select * from employee1;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+19 rows selected.
+
+
+
+
+SQL> select max(sal) as Highest_Salary from employee1;
+
+HIGHEST_SALARY
+--------------
+          5000
+
+SQL> select min(sal) as Highest_Salary from employee1 ;
+
+HIGHEST_SALARY
+--------------
+           800
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 5000);
+
+HIGHEST_SALARY
+--------------
+          3000
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000);
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000)
+                                                              *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 5000);
+
+HIGHEST_SALARY
+--------------
+          3000
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 3000);
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 3000)
+                                                              *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 3000);
+
+HIGHEST_SALARY
+--------------
+          2850
+
+SQL> SELECT sal AS Third_Highest
+  2  FROM (
+  3      SELECT sal, ROW_NUMBER() OVER (ORDER BY sal DESC) AS rn
+  4      FROM employee1
+  5  ) ranked
+  6  WHERE rn = 3;
+
+THIRD_HIGHEST
+-------------
+         3200
+
+
+
+SQL> select max(Sal) as Highest_Salary  where max(sal) = (select max(sal) from employee1);
+select max(Sal) as Highest_Salary  where max(sal) = (select max(sal) from employee1)
+                                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT MAX(sal) AS Highest_Salary
+  2  FROM employee1
+  3  WHERE MAX(sal) = (SELECT MAX(sal) FROM employee1);
+WHERE MAX(sal) = (SELECT MAX(sal) FROM employee1)
+      *
+ERROR at line 3:
+ORA-00934: group function is not allowed here
+
+
+SQL> select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1;
+select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1
+                                                              *
+ERROR at line 1:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> select max(Sal)  from employee1 where sal < (select max(sal) from employee1;
+select max(Sal)  from employee1 where sal < (select max(sal) from employee1
+                                             *
+ERROR at line 1:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1);
+
+HIGHEST_SALARY
+--------------
+          3200
+
+SQL> select max(Sal) as 2ndHighest_salary from employee1 where sal < (select max(sal) from employee1);
+select max(Sal) as 2ndHighest_salary from employee1 where sal < (select max(sal) from employee1)
+                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as second_Highest_salary from employee1 where sal < (select max(sal) from employee1);
+
+SECOND_HIGHEST_SALARY
+---------------------
+                 3200
+
+SQL> SELECT *
+  2  FROM employee1
+  3  WHERE sal = (
+  4      SELECT MAX(sal)
+  5      FROM employee1
+  6      WHERE sal < (SELECT MAX(sal) FROM employee1)
+  7  );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal) SELECT MAX(sal)  FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) );
+SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal) SELECT MAX(sal)  FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) )
+                                                       *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal = (SELECT MAX(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1 where sal < (select max(sal) from employee1)));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal = (SELECT min(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal < (SELECT min(sal) FROM employee1 where sal < (select min(sal) from employee1)));
+
+no rows selected
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (SELECT min(sal) FROM employee1 where sal > (select min(sal) from employee1)));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+
+SQL>
+
+
+
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Wed Mar 25 11:02:00 2026
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> CONN
+Enter user-name: vijay
+Enter password:
+Connected.
+SQL> set pagesiz300 linesize300;
+SQL> select * from employee1;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+19 rows selected.
+
+SQL> select max(sal) as Highest Salary from employee1;
+select max(sal) as Highest Salary from employee1
+                           *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(sal) as Highest_Salary from employee1;
+
+HIGHEST_SALARY
+--------------
+          5000
+
+SQL> select min(sal) as Highest_Salary from employee1 ;
+
+HIGHEST_SALARY
+--------------
+           800
+
+SQL> select max(sal) as Highest_Salary from employee1 where max(Sal) < 5000;
+select max(sal) as Highest_Salary from employee1 where max(Sal) < 5000
+                                                       *
+ERROR at line 1:
+ORA-00934: group function is not allowed here
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < max(sal));
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < max(sal))
+                                                                                                  *
+ERROR at line 1:
+ORA-00934: group function is not allowed here
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000);
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000)
+                                                              *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 5000);
+
+HIGHEST_SALARY
+--------------
+          3000
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000);
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 5000)
+                                                              *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 5000);
+
+HIGHEST_SALARY
+--------------
+          3000
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 3000);
+select max(sal) as Highest_Salary from employee1 where sal < (select * from employee1 where sal < 3000)
+                                                              *
+ERROR at line 1:
+ORA-00913: too many values
+
+
+SQL> select max(sal) as Highest_Salary from employee1 where sal < (select max(sal) from employee1 where sal < 3000);
+
+HIGHEST_SALARY
+--------------
+          2850
+
+SQL> SELECT sal AS Third_Highest
+  2  FROM (
+  3      SELECT sal, ROW_NUMBER() OVER (ORDER BY sal DESC) AS rn
+  4      FROM employee1
+  5  ) ranked
+  6  WHERE rn = 3;
+
+THIRD_HIGHEST
+-------------
+         3200
+
+SQL> select max(Sal) as Highest_Salary where ename = (select * from employee1);
+select max(Sal) as Highest_Salary where ename = (select * from employee1)
+                                  *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as Highest_Salary where ename = (select max(sal) from employee1);
+select max(Sal) as Highest_Salary where ename = (select max(sal) from employee1)
+                                  *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as Highest_Salary where sal = (select max(sal) from employee1);
+select max(Sal) as Highest_Salary where sal = (select max(sal) from employee1)
+                                  *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as Highest_Salary  = (select max(sal) from employee1);
+select max(Sal) as Highest_Salary  = (select max(sal) from employee1)
+                                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as Highest_Salary  where max(sal) = (select max(sal) from employee1);
+select max(Sal) as Highest_Salary  where max(sal) = (select max(sal) from employee1)
+                                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT MAX(sal) AS Highest_Salary
+  2  FROM employee1
+  3  WHERE MAX(sal) = (SELECT MAX(sal) FROM employee1);
+WHERE MAX(sal) = (SELECT MAX(sal) FROM employee1)
+      *
+ERROR at line 3:
+ORA-00934: group function is not allowed here
+
+
+SQL> select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1;
+select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1
+                                                              *
+ERROR at line 1:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> select max(Sal)  from employee1 where sal < (select max(sal) from employee1;
+select max(Sal)  from employee1 where sal < (select max(sal) from employee1
+                                             *
+ERROR at line 1:
+ORA-00921: unexpected end of SQL command
+
+
+SQL> select max(Sal) as Highest_salary from employee1 where sal < (select max(sal) from employee1);
+
+HIGHEST_SALARY
+--------------
+          3200
+
+SQL> select max(Sal) as 2ndHighest_salary from employee1 where sal < (select max(sal) from employee1);
+select max(Sal) as 2ndHighest_salary from employee1 where sal < (select max(sal) from employee1)
+                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select max(Sal) as second_Highest_salary from employee1 where sal < (select max(sal) from employee1);
+
+SECOND_HIGHEST_SALARY
+---------------------
+                 3200
+
+SQL> SELECT *
+  2  FROM employee1
+  3  WHERE sal = (
+  4      SELECT MAX(sal)
+  5      FROM employee1
+  6      WHERE sal < (SELECT MAX(sal) FROM employee1)
+  7  );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal) SELECT MAX(sal)  FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) );
+SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal) SELECT MAX(sal)  FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) )
+                                                       *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal = (SELECT MAX(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1 where sal < (select max(sal) from employee1)));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal = (SELECT min(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal < (SELECT min(sal) FROM employee1 where sal < (select min(sal) from employee1)));
+
+no rows selected
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (SELECT min(sal) FROM employee1 where sal > (select min(sal) from employee1)));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal = (SELECT min(sal) FROM employee1) );
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1)));
+SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1)))
+                                                                                                                      *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+
+SQL> SELECT sal as third_highest_salary  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1 where sal < (select max(sal) from employee1)));
+
+THIRD_HIGHEST_SALARY
+--------------------
+                3000
+                3000
+
+SQL> SELECT sal as third_highest_salary  FROM employee1 WHERE sal = ( SELECT MAX(sal)   FROM employee1  WHERE sal < (SELECT MAX(sal) FROM employee1 where sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1))));
+
+THIRD_HIGHEST_SALARY
+--------------------
+                2975
+
+SQL> select min(sal) as lowest_salary from employee1;
+
+LOWEST_SALARY
+-------------
+          800
+
+SQL> select min(sal) as lowest_salary from employee1 where sal > (select min(sal) from employee1));
+select min(sal) as lowest_salary from employee1 where sal > (select min(sal) from employee1))
+                                                                                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> SELECT *  FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+SECOND_LOWEST_SALARY
+--------------------
+                 950
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal <( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+SECOND_LOWEST_SALARY
+--------------------
+                 800
+                 800
+                 800
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+SECOND_LOWEST_SALARY
+--------------------
+                 950
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal <( SELECT min(sal)   FROM employee1);
+
+no rows selected
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1));
+
+SECOND_LOWEST_SALARY
+--------------------
+                 950
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1 where sal > (select min(sal) from employee1)));
+
+SECOND_LOWEST_SALARY
+--------------------
+                1100
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal < (select min(sal) from employee1 where sal < (select min(sal) from employee1)));
+
+no rows selected
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal < ( SELECT min(sal)   FROM employee1  WHERE sal < (select min(sal) from employee1 where sal < (select min(sal) from employee1)));
+
+no rows selected
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal < ( SELECT max(sal)   FROM employee1  WHERE sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1)));
+
+SECOND_LOWEST_SALARY
+--------------------
+                2850
+                2450
+                 800
+                1600
+                1250
+                2975
+                1250
+                1500
+                1100
+                 950
+                1300
+                 800
+                 800
+
+13 rows selected.
+
+SQL> SELECT sal as second_lowest_salary FROM employee1 WHERE sal = ( SELECT max(sal)   FROM employee1  WHERE sal < (select max(sal) from employee1 where sal < (select max(sal) from employee1)));
+
+SECOND_LOWEST_SALARY
+--------------------
+                3000
+                3000
+
+SQL> SELECT sal as third_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal < (select min(sal) from employee1 where sal < (select min(sal) from employee1)));
+
+no rows selected
+
+SQL> SELECT sal as third_lowest_salary FROM employee1 WHERE sal = ( SELECT min(sal)   FROM employee1  WHERE sal > (select min(sal) from employee1 where sal > (select min(sal) from employee1)));
+
+THIRD_LOWEST_SALARY
+-------------------
+               1100
+
+SQL>  
