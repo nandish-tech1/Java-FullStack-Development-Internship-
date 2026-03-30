@@ -1,0 +1,490 @@
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Mon Mar 30 11:14:36 2026
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> conn
+Enter user-name: vijay
+Enter password:
+Connected.
+SQL> select ename,sal,loc from employee1 where sal > 1700;
+select ename,sal,loc from employee1 where sal > 1700
+                 *
+ERROR at line 1:
+ORA-00904: "LOC": invalid identifier
+
+
+SQL> set pagesize300 linesize300;
+SQL> select * from employee1;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+19 rows selected.
+
+SQL> select ename,sal,loc from employee1,dept where sal > 1700;
+select ename,sal,loc from employee1,dept where sal > 1700
+                                    *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+EMP                            TABLE
+EMP2                           TABLE
+EMAIL                          TABLE
+FREEDOM_FIGHTERS               TABLE
+EMPLOYEE1                      TABLE
+STUDENT                        TABLE
+ACCOUNT                        TABLE
+STUDENT_PROFILE                TABLE
+TEACHER                        TABLE
+COURSE                         TABLE
+EMPLOYEE                       TABLE
+
+11 rows selected.
+
+SQL> select ename ,sal,loc from employee1 inner join dept on emp.deptno = dept.deptno;
+select ename ,sal,loc from employee1 inner join dept on emp.deptno = dept.deptno
+                                                *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL>
+SQL> CREATE TABLE DEPT (
+  2      DEPTNO NUMBER(2) PRIMARY KEY,
+  3      DNAME  VARCHAR2(14),
+  4      LOC    VARCHAR2(13)
+  5  );
+
+Table created.
+
+SQL> INSERT INTO DEPT VALUES (10, 'ACCOUNTING', 'NEW YORK');
+
+1 row created.
+
+SQL> INSERT INTO DEPT VALUES (20, 'RESEARCH',   'DALLAS');
+
+1 row created.
+
+SQL> INSERT INTO DEPT VALUES (30, 'SALES',      'CHICAGO');
+
+1 row created.
+
+SQL> INSERT INTO DEPT VALUES (40, 'OPERATIONS', 'BOSTON');
+
+1 row created.
+
+SQL> select * from dept;
+
+    DEPTNO DNAME          LOC
+---------- -------------- -------------
+        10 ACCOUNTING     NEW YORK
+        20 RESEARCH       DALLAS
+        30 SALES          CHICAGO
+        40 OPERATIONS     BOSTON
+
+SQL> select ename,sal,loc from employee1,dept where sal > 1700;
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                    2850 NEW YORK
+CLARK                                                    2450 NEW YORK
+JONES                                                    2975 NEW YORK
+SCOTT                                                    3000 NEW YORK
+KING                                                     5000 NEW YORK
+FORD                                                     3000 NEW YORK
+REDDY                                                    3200 NEW YORK
+REDDY                                                    3200 NEW YORK
+MILLER                                                   3200 NEW YORK
+BLAKE                                                    2850 DALLAS
+CLARK                                                    2450 DALLAS
+JONES                                                    2975 DALLAS
+SCOTT                                                    3000 DALLAS
+KING                                                     5000 DALLAS
+FORD                                                     3000 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+MILLER                                                   3200 DALLAS
+BLAKE                                                    2850 CHICAGO
+CLARK                                                    2450 CHICAGO
+JONES                                                    2975 CHICAGO
+SCOTT                                                    3000 CHICAGO
+KING                                                     5000 CHICAGO
+FORD                                                     3000 CHICAGO
+REDDY                                                    3200 CHICAGO
+REDDY                                                    3200 CHICAGO
+MILLER                                                   3200 CHICAGO
+BLAKE                                                    2850 BOSTON
+CLARK                                                    2450 BOSTON
+JONES                                                    2975 BOSTON
+SCOTT                                                    3000 BOSTON
+KING                                                     5000 BOSTON
+FORD                                                     3000 BOSTON
+REDDY                                                    3200 BOSTON
+REDDY                                                    3200 BOSTON
+MILLER                                                   3200 BOSTON
+
+36 rows selected.
+
+SQL> select ename,sal,loc from employee1 inner join dept on employee1.deptno = dept.deptno;
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                    2850 CHICAGO
+CLARK                                                    2450 NEW YORK
+SMITH                                                     800 DALLAS
+ALLEN                                                    1600 CHICAGO
+WARD                                                     1250 CHICAGO
+JONES                                                    2975 DALLAS
+MARTIN                                                   1250 CHICAGO
+SCOTT                                                    3000 DALLAS
+KING                                                     5000 NEW YORK
+TURNER                                                   1500 CHICAGO
+ADAMS                                                    1100 DALLAS
+JAMES                                                     950 CHICAGO
+FORD                                                     3000 DALLAS
+MILLER                                                   1300 NEW YORK
+REDDY                                                    3200 DALLAS
+Narayana_Reddy_YL                                         800 DALLAS
+Narayana Reddy YL                                         800 DALLAS
+REDDY                                                    3200 DALLAS
+MILLER                                                   3200 DALLAS
+
+19 rows selected.
+
+SQL> select ename,sal,loc from employee1 inner join dept on employee1.deptno = dept.deptno and where  sal > 1700;
+select ename,sal,loc from employee1 inner join dept on employee1.deptno = dept.deptno and where  sal > 1700
+                                                                                          *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select ename,sal,loc from employee1 inner join dept on employee1.deptno = dept.deptno where  sal > 1700;
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                    2850 CHICAGO
+CLARK                                                    2450 NEW YORK
+JONES                                                    2975 DALLAS
+SCOTT                                                    3000 DALLAS
+KING                                                     5000 NEW YORK
+FORD                                                     3000 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+MILLER                                                   3200 DALLAS
+
+9 rows selected.
+
+SQL>  select ename,sal,loc from employee1, dept where employee1.deptno = dept.deptno and  sal > 1700;
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                    2850 CHICAGO
+CLARK                                                    2450 NEW YORK
+JONES                                                    2975 DALLAS
+SCOTT                                                    3000 DALLAS
+KING                                                     5000 NEW YORK
+FORD                                                     3000 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+MILLER                                                   3200 DALLAS
+
+9 rows selected.
+
+SQL> select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno wwhere sal > 1700;
+select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno wwhere sal > 1700
+                                                                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno where sal > 1700;
+select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno where sal > 1700
+                                                                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno and where sal > 1700;
+select ename , sal,loc from employee1 , dept where emp.deptno = dept.deptno and where sal > 1700
+                                                                                *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> select ename.job,dname from employee1 inner join dept on  employee1.deptno = dept.deptno where  job in ('SALESMAN','ANALYST');
+select ename.job,dname from employee1 inner join dept on  employee1.deptno = dept.deptno where  job in ('SALESMAN','ANALYST')
+       *
+ERROR at line 1:
+ORA-00904: "ENAME"."JOB": invalid identifier
+
+
+SQL> select ename.job,dname from employee1 inner join dept on  employee1.deptno = dept.deptno ;
+select ename.job,dname from employee1 inner join dept on  employee1.deptno = dept.deptno
+       *
+ERROR at line 1:
+ORA-00904: "ENAME"."JOB": invalid identifier
+
+
+SQL>
+SQL>  select ename,job,dname from employee1 inner join dept on employee1.deptno = dept.deptno where job in('SALESMAN','ANALYST');
+
+ENAME                                              JOB                                                DNAME
+-------------------------------------------------- -------------------------------------------------- --------------
+ALLEN                                              SALESMAN                                           SALES
+WARD                                               SALESMAN                                           SALES
+MARTIN                                             SALESMAN                                           SALES
+SCOTT                                              ANALYST                                            RESEARCH
+TURNER                                             SALESMAN                                           SALES
+FORD                                               ANALYST                                            RESEARCH
+REDDY                                              ANALYST                                            RESEARCH
+REDDY                                              ANALYST                                            RESEARCH
+MILLER                                             ANALYST                                            RESEARCH
+
+9 rows selected.
+
+
+SQL> select ename,job,dname from employee1, dept where employee1.deptno = dept.deptno and job in('SALESMAN','ANALYST');
+
+ENAME                                              JOB                                                DNAME
+-------------------------------------------------- -------------------------------------------------- --------------
+ALLEN                                              SALESMAN                                           SALES
+WARD                                               SALESMAN                                           SALES
+MARTIN                                             SALESMAN                                           SALES
+SCOTT                                              ANALYST                                            RESEARCH
+TURNER                                             SALESMAN                                           SALES
+FORD                                               ANALYST                                            RESEARCH
+REDDY                                              ANALYST                                            RESEARCH
+REDDY                                              ANALYST                                            RESEARCH
+MILLER                                             ANALYST                                            RESEARCH
+
+9 rows selected.
+
+SQL> select ename , comm , loc from employee1 inner join dept on employee1.deptno = dept.deptno where comm >=0;
+
+ENAME                                                    COMM LOC
+-------------------------------------------------- ---------- -------------
+TURNER                                                      0 CHICAGO
+MARTIN                                                   1400 CHICAGO
+WARD                                                      500 CHICAGO
+ALLEN                                                     300 CHICAGO
+
+SQL>
+
+SQL> select ename , comm , loc from employee1, dept where  employee1.deptno = dept.deptno and comm >=0;
+
+ENAME                                                    COMM LOC
+-------------------------------------------------- ---------- -------------
+TURNER                                                      0 CHICAGO
+MARTIN                                                   1400 CHICAGO
+WARD                                                      500 CHICAGO
+ALLEN                                                     300 CHICAGO
+
+SQL>SQL> select ename , sal*12,loc from employee1 inner join  dept on employee1.deptno = dept.deptno where loc in('NEW YORK','CHICAGO');
+
+ENAME                                                  SAL*12 LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                   34200 CHICAGO
+CLARK                                                   29400 NEW YORK
+ALLEN                                                   19200 CHICAGO
+WARD                                                    15000 CHICAGO
+MARTIN                                                  15000 CHICAGO
+KING                                                    60000 NEW YORK
+TURNER                                                  18000 CHICAGO
+JAMES                                                   11400 CHICAGO
+MILLER                                                  15600 NEW YORK
+
+9 rows selected.
+SQL> select ename , sal*12,loc from employee1, dept where  employee1.deptno = dept.deptno and loc in('NEW YORK','CHICAGO');
+
+ENAME                                                  SAL*12 LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                   34200 CHICAGO
+CLARK                                                   29400 NEW YORK
+ALLEN                                                   19200 CHICAGO
+WARD                                                    15000 CHICAGO
+MARTIN                                                  15000 CHICAGO
+KING                                                    60000 NEW YORK
+TURNER                                                  18000 CHICAGO
+JAMES                                                   11400 CHICAGO
+MILLER                                                  15600 NEW YORK
+
+9 rows selected.SQL> select ename,dept.* from employee1  inner join dept on employee1.deptno = dept.deptno;
+
+ENAME                                                  DEPTNO DNAME          LOC
+-------------------------------------------------- ---------- -------------- -------------
+BLAKE                                                      30 SALES          CHICAGO
+CLARK                                                      10 ACCOUNTING     NEW YORK
+SMITH                                                      20 RESEARCH       DALLAS
+ALLEN                                                      30 SALES          CHICAGO
+WARD                                                       30 SALES          CHICAGO
+JONES                                                      20 RESEARCH       DALLAS
+MARTIN                                                     30 SALES          CHICAGO
+SCOTT                                                      20 RESEARCH       DALLAS
+KING                                                       10 ACCOUNTING     NEW YORK
+TURNER                                                     30 SALES          CHICAGO
+ADAMS                                                      20 RESEARCH       DALLAS
+JAMES                                                      30 SALES          CHICAGO
+FORD                                                       20 RESEARCH       DALLAS
+MILLER                                                     10 ACCOUNTING     NEW YORK
+REDDY                                                      20 RESEARCH       DALLAS
+Narayana_Reddy_YL                                          20 RESEARCH       DALLAS
+Narayana Reddy YL                                          20 RESEARCH       DALLAS
+REDDY                                                      20 RESEARCH       DALLAS
+MILLER                                                     20 RESEARCH       DALLAS
+
+19 rows selected.
+SQL> select ename,dept.* from employee1,dept where employee1.deptno = dept.deptno;
+
+ENAME                                                  DEPTNO DNAME          LOC
+-------------------------------------------------- ---------- -------------- -------------
+BLAKE                                                      30 SALES          CHICAGO
+CLARK                                                      10 ACCOUNTING     NEW YORK
+SMITH                                                      20 RESEARCH       DALLAS
+ALLEN                                                      30 SALES          CHICAGO
+WARD                                                       30 SALES          CHICAGO
+JONES                                                      20 RESEARCH       DALLAS
+MARTIN                                                     30 SALES          CHICAGO
+SCOTT                                                      20 RESEARCH       DALLAS
+KING                                                       10 ACCOUNTING     NEW YORK
+TURNER                                                     30 SALES          CHICAGO
+ADAMS                                                      20 RESEARCH       DALLAS
+JAMES                                                      30 SALES          CHICAGO
+FORD                                                       20 RESEARCH       DALLAS
+MILLER                                                     10 ACCOUNTING     NEW YORK
+REDDY                                                      20 RESEARCH       DALLAS
+Narayana_Reddy_YL                                          20 RESEARCH       DALLAS
+Narayana Reddy YL                                          20 RESEARCH       DALLAS
+REDDY                                                      20 RESEARCH       DALLAS
+MILLER                                                     20 RESEARCH       DALLAS
+
+19 rows selected.
+
+SQL> select employee1.* , loc from employee1  inner join dept on employee1.deptno = dept.deptno;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO LOC
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ---------- -------------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30 CHICAGO
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10 NEW YORK
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20 DALLAS
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30 CHICAGO
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30 CHICAGO
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20 DALLAS
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30 CHICAGO
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20 DALLAS
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10 NEW YORK
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30 CHICAGO
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20 DALLAS
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30 CHICAGO
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20 DALLAS
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10 NEW YORK
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20 DALLAS
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20 DALLAS
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20 DALLAS
+
+19 rows selected.
+
+SQL> select employee1.* , loc from employee1 , dept where employee1.deptno = dept.deptno;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO LOC
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ---------- -------------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30 CHICAGO
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10 NEW YORK
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20 DALLAS
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30 CHICAGO
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30 CHICAGO
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20 DALLAS
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30 CHICAGO
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20 DALLAS
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10 NEW YORK
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30 CHICAGO
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20 DALLAS
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30 CHICAGO
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20 DALLAS
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10 NEW YORK
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20 DALLAS
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20 DALLAS
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20 DALLAS
+
+19 rows selected.
+
+SQL> select employee1.* , loc from employee1  inner join dept on employee1.deptno = dept.deptno where sal  > (select sal from employee1 where ename = 'TURNER');
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO LOC
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ---------- -------------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30 CHICAGO
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10 NEW YORK
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30 CHICAGO
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20 DALLAS
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20 DALLAS
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10 NEW YORK
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20 DALLAS
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20 DALLAS
+
+10 rows selected.
+
+SQL> select employee1.* , loc from employee1  , dept where  employee1.deptno = dept.deptno and sal  > (select sal from employee1 where ename = 'TURNER');
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO LOC
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ---------- -------------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30 CHICAGO
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10 NEW YORK
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30 CHICAGO
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20 DALLAS
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20 DALLAS
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10 NEW YORK
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20 DALLAS
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20 DALLAS
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20 DALLAS
+
+10 rows selected.
+
+SQL>
+SQL> select ename,sal, loc from employee1  , dept where  employee1.deptno = dept.deptno and sal in(select sal from employee1 group by sal having count(*) > 1);
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+MARTIN                                                   1250 CHICAGO
+WARD                                                     1250 CHICAGO
+FORD                                                     3000 DALLAS
+SCOTT                                                    3000 DALLAS
+MILLER                                                   3200 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+Narayana Reddy YL                                         800 DALLAS
+Narayana_Reddy_YL                                         800 DALLAS
+SMITH                                                     800 DALLAS
+
+10 rows selected.
+
