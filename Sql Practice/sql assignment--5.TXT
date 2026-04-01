@@ -1,0 +1,375 @@
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Wed Apr 1 10:39:37 2026
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> conn
+Enter user-name: vijay
+Enter password:
+Connected.
+SQL> set pagesize300 linesize300;
+SQL> select * from employee1;
+
+     EMPNO ENAME                                              JOB                                                HIREDATE         SAL       COMM     DEPTNO
+---------- -------------------------------------------------- -------------------------------------------------- --------- ---------- ---------- ----------
+      7698 BLAKE                                              MANAGER                                            01-MAY-81       2850                    30
+      7782 CLARK                                              MANAGER                                            09-JUN-81       2450                    10
+      7369 SMITH                                              CLERK                                              17-DEC-80        800                    20
+      7499 ALLEN                                              SALESMAN                                           20-FEB-81       1600        300         30
+      7521 WARD                                               SALESMAN                                           22-FEB-81       1250        500         30
+      7566 JONES                                              MANAGER                                            02-APR-81       2975                    20
+      7654 MARTIN                                             SALESMAN                                           28-SEP-81       1250       1400         30
+      7788 SCOTT                                              ANALYST                                            09-DEC-82       3000                    20
+      7839 KING                                               PRESIDENT                                          17-NOV-81       5000                    10
+      7844 TURNER                                             SALESMAN                                           08-SEP-81       1500          0         30
+      7876 ADAMS                                              CLERK                                              12-JAN-83       1100                    20
+      7900 JAMES                                              CLERK                                              03-DEC-81        950                    30
+      7902 FORD                                               ANALYST                                            03-DEC-81       3000                    20
+      7934 MILLER                                             CLERK                                              23-JAN-82       1300                    10
+      7940 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      7239 Narayana_Reddy_YL                                  CLERK                                              17-DEC-80        800                    20
+      7349 Narayana Reddy YL                                  CLERK                                              17-DEC-80        800                    20
+      1230 REDDY                                              ANALYST                                            15-MAR-83       3200                    20
+      1240 MILLER                                             ANALYST                                            15-MAR-83       3200                    20
+
+19 rows selected.
+
+SQL> select ename,loc from employee1 ;
+select ename,loc from employee1
+             *
+ERROR at line 1:
+ORA-00904: "LOC": invalid identifier
+
+
+SQL> select ename,loc from employee1 natural join dept ;
+
+ENAME                                              LOC
+-------------------------------------------------- -------------
+BLAKE                                              CHICAGO
+CLARK                                              NEW YORK
+SMITH                                              DALLAS
+ALLEN                                              CHICAGO
+WARD                                               CHICAGO
+JONES                                              DALLAS
+MARTIN                                             CHICAGO
+SCOTT                                              DALLAS
+KING                                               NEW YORK
+TURNER                                             CHICAGO
+ADAMS                                              DALLAS
+JAMES                                              CHICAGO
+FORD                                               DALLAS
+MILLER                                             NEW YORK
+REDDY                                              DALLAS
+Narayana_Reddy_YL                                  DALLAS
+Narayana Reddy YL                                  DALLAS
+REDDY                                              DALLAS
+MILLER                                             DALLAS
+
+19 rows selected.
+
+SQL> select ename,sal,loc from employee1 natural join dept where sal > 2000 ;
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                    2850 CHICAGO
+CLARK                                                    2450 NEW YORK
+JONES                                                    2975 DALLAS
+SCOTT                                                    3000 DALLAS
+KING                                                     5000 NEW YORK
+FORD                                                     3000 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+MILLER                                                   3200 DALLAS
+
+9 rows selected.
+
+SQL> select ename,job,loc from employee1 natural join dept where job in ('NEW YORK','DALLAS';
+select ename,job,loc from employee1 natural join dept where job in ('NEW YORK','DALLAS'
+                                                                                      *
+ERROR at line 1:
+ORA-00907: missing right parenthesis
+
+
+SQL> select ename,job,loc from employee1 natural join dept where job in ('NEW YORK','DALLAS');
+
+no rows selected
+
+SQL> select ename,job,loc from employee1 natural join dept where LOC in ('NEW YORK','DALLAS');
+
+ENAME                                              JOB                                                LOC
+-------------------------------------------------- -------------------------------------------------- -------------
+CLARK                                              MANAGER                                            NEW YORK
+SMITH                                              CLERK                                              DALLAS
+JONES                                              MANAGER                                            DALLAS
+SCOTT                                              ANALYST                                            DALLAS
+KING                                               PRESIDENT                                          NEW YORK
+ADAMS                                              CLERK                                              DALLAS
+FORD                                               ANALYST                                            DALLAS
+MILLER                                             CLERK                                              NEW YORK
+REDDY                                              ANALYST                                            DALLAS
+Narayana_Reddy_YL                                  CLERK                                              DALLAS
+Narayana Reddy YL                                  CLERK                                              DALLAS
+REDDY                                              ANALYST                                            DALLAS
+MILLER                                             ANALYST                                            DALLAS
+
+13 rows selected.
+
+SQL> select count(*) , ename,loc from employee1 natural join dept where loc = 1;
+select count(*) , ename,loc from employee1 natural join dept where loc = 1
+                  *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*) ,loc from employee1 natural join dept where loc = 1;
+select count(*) ,loc from employee1 natural join dept where loc = 1
+                 *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*) ,loc from employee1 natural join dept where loc >1;
+select count(*) ,loc from employee1 natural join dept where loc >1
+                 *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*) ,loc from employee1 natural join dept ;
+select count(*) ,loc from employee1 natural join dept
+                 *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*) loc from employee1 natural join dept ;
+
+       LOC
+----------
+        19
+
+SQL> select count(*) loc,ename from employee1 natural join dept ;
+select count(*) loc,ename from employee1 natural join dept
+                    *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select *  count(*) loc from employee1 natural join dept ;
+select *  count(*) loc from employee1 natural join dept
+          *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected
+
+
+SQL> select count(*) loc,ename from employee1 natural join dept ;
+select count(*) loc,ename from employee1 natural join dept
+                    *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select count(*) loc from employee1 natural join dept ;
+
+       LOC
+----------
+        19
+
+SQL> select count(*) loc from employee1 natural join dept = (select ename from employee1);
+select count(*) loc from employee1 natural join dept = (select ename from employee1)
+                                                     *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(*) loc from employee1 natural join dept > (select ename from employee1);
+select count(*) loc from employee1 natural join dept > (select ename from employee1)
+                                                     *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select ename , loc , count(*) from employee1 natural join dept ;
+select ename , loc , count(*) from employee1 natural join dept
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select ename , loc from employee1 natural join dept ;
+
+ENAME                                              LOC
+-------------------------------------------------- -------------
+BLAKE                                              CHICAGO
+CLARK                                              NEW YORK
+SMITH                                              DALLAS
+ALLEN                                              CHICAGO
+WARD                                               CHICAGO
+JONES                                              DALLAS
+MARTIN                                             CHICAGO
+SCOTT                                              DALLAS
+KING                                               NEW YORK
+TURNER                                             CHICAGO
+ADAMS                                              DALLAS
+JAMES                                              CHICAGO
+FORD                                               DALLAS
+MILLER                                             NEW YORK
+REDDY                                              DALLAS
+Narayana_Reddy_YL                                  DALLAS
+Narayana Reddy YL                                  DALLAS
+REDDY                                              DALLAS
+MILLER                                             DALLAS
+
+19 rows selected.
+
+SQL> select ename , loc ,count(*) as coount_of_emp from employee1 natural join dept ;
+select ename , loc ,count(*) as coount_of_emp from employee1 natural join dept
+       *
+ERROR at line 1:
+ORA-00937: not a single-group group function
+
+
+SQL> select ename , loc ,count(*) as coount_of_emp from employee1 natural join dept group by ename ,loc ;
+
+ENAME                                              LOC           COOUNT_OF_EMP
+-------------------------------------------------- ------------- -------------
+SMITH                                              DALLAS                    1
+WARD                                               CHICAGO                   1
+MARTIN                                             CHICAGO                   1
+JAMES                                              CHICAGO                   1
+MILLER                                             DALLAS                    1
+BLAKE                                              CHICAGO                   1
+ALLEN                                              CHICAGO                   1
+Narayana Reddy YL                                  DALLAS                    1
+JONES                                              DALLAS                    1
+SCOTT                                              DALLAS                    1
+FORD                                               DALLAS                    1
+KING                                               NEW YORK                  1
+Narayana_Reddy_YL                                  DALLAS                    1
+CLARK                                              NEW YORK                  1
+MILLER                                             NEW YORK                  1
+REDDY                                              DALLAS                    2
+TURNER                                             CHICAGO                   1
+ADAMS                                              DALLAS                    1
+
+18 rows selected.
+
+SQL> select ename , loc ,count(*) as number_of_emp_each_loc from employee1 natural join dept group by ename ,loc ;
+
+ENAME                                              LOC           NUMBER_OF_EMP_EACH_LOC
+-------------------------------------------------- ------------- ----------------------
+SMITH                                              DALLAS                             1
+WARD                                               CHICAGO                            1
+MARTIN                                             CHICAGO                            1
+JAMES                                              CHICAGO                            1
+MILLER                                             DALLAS                             1
+BLAKE                                              CHICAGO                            1
+ALLEN                                              CHICAGO                            1
+Narayana Reddy YL                                  DALLAS                             1
+JONES                                              DALLAS                             1
+SCOTT                                              DALLAS                             1
+FORD                                               DALLAS                             1
+KING                                               NEW YORK                           1
+Narayana_Reddy_YL                                  DALLAS                             1
+CLARK                                              NEW YORK                           1
+MILLER                                             NEW YORK                           1
+REDDY                                              DALLAS                             2
+TURNER                                             CHICAGO                            1
+ADAMS                                              DALLAS                             1
+
+18 rows selected.
+
+SQL> select count(*) ,loc from employee1 natural join deptmgroup by loc;
+select count(*) ,loc from employee1 natural join deptmgroup by loc
+                                                            *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> select count(*) ,loc from employee1 natural join dept group by loc;
+
+  COUNT(*) LOC
+---------- -------------
+         3 NEW YORK
+         6 CHICAGO
+        10 DALLAS
+
+SQL> select ename,deptno,loc from employee1 natural join dept;
+
+ENAME                                                  DEPTNO LOC
+-------------------------------------------------- ---------- -------------
+BLAKE                                                      30 CHICAGO
+CLARK                                                      10 NEW YORK
+SMITH                                                      20 DALLAS
+ALLEN                                                      30 CHICAGO
+WARD                                                       30 CHICAGO
+JONES                                                      20 DALLAS
+MARTIN                                                     30 CHICAGO
+SCOTT                                                      20 DALLAS
+KING                                                       10 NEW YORK
+TURNER                                                     30 CHICAGO
+ADAMS                                                      20 DALLAS
+JAMES                                                      30 CHICAGO
+FORD                                                       20 DALLAS
+MILLER                                                     10 NEW YORK
+REDDY                                                      20 DALLAS
+Narayana_Reddy_YL                                          20 DALLAS
+Narayana Reddy YL                                          20 DALLAS
+REDDY                                                      20 DALLAS
+MILLER                                                     20 DALLAS
+
+19 rows selected.
+
+SQL> select ename,sal,job, loc from employee1 natural join dept where job in('MANAGER','SALESMAN');
+
+ENAME                                                     SAL JOB                                                LOC
+-------------------------------------------------- ---------- -------------------------------------------------- -------------
+BLAKE                                                    2850 MANAGER                                            CHICAGO
+CLARK                                                    2450 MANAGER                                            NEW YORK
+ALLEN                                                    1600 SALESMAN                                           CHICAGO
+WARD                                                     1250 SALESMAN                                           CHICAGO
+JONES                                                    2975 MANAGER                                            DALLAS
+MARTIN                                                   1250 SALESMAN                                           CHICAGO
+TURNER                                                   1500 SALESMAN                                           CHICAGO
+
+7 rows selected.
+
+SQL> select ename,loc from employee1  natural join dept where empno IN(SELECT MGR FROM EMPLOYEE1);
+select ename,loc from employee1  natural join dept where empno IN(SELECT MGR FROM EMPLOYEE1)
+                                                                         *
+ERROR at line 1:
+ORA-00904: "MGR": invalid identifier
+
+
+SQL> SELECT ENAME ,SAL,LOC FROM EMPLOYEE1 NATURAL JOIN DEPT WHERE SAL IN(SELECT SAL FROM EMPLOYEE1 GROUP BY HAVING COUNT(*) > 1);
+SELECT ENAME ,SAL,LOC FROM EMPLOYEE1 NATURAL JOIN DEPT WHERE SAL IN(SELECT SAL FROM EMPLOYEE1 GROUP BY HAVING COUNT(*) > 1)
+                                                                                                       *
+ERROR at line 1:
+ORA-00936: missing expression
+
+
+SQL> SELECT ENAME ,SAL,LOC FROM EMPLOYEE1 NATURAL JOIN DEPT WHERE SAL IN(SELECT SAL FROM EMPLOYEE1 GROUP BY SAL  HAVING COUNT(*) > 1);
+
+ENAME                                                     SAL LOC
+-------------------------------------------------- ---------- -------------
+MARTIN                                                   1250 CHICAGO
+WARD                                                     1250 CHICAGO
+FORD                                                     3000 DALLAS
+SCOTT                                                    3000 DALLAS
+MILLER                                                   3200 DALLAS
+REDDY                                                    3200 DALLAS
+REDDY                                                    3200 DALLAS
+Narayana Reddy YL                                         800 DALLAS
+Narayana_Reddy_YL                                         800 DALLAS
+SMITH                                                     800 DALLAS
+
+10 rows selected.
+
+SQL> SELECT LOC,COUNT(*) FROM EMPLOYEE1 NATURAL JOIN DEPT WHERE LOC !='CHICAGO' GROUP BY LOC;
+
+LOC             COUNT(*)
+------------- ----------
+NEW YORK               3
+DALLAS                10
+
+SQL>
