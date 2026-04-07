@@ -1,0 +1,392 @@
+
+SQL*Plus: Release 10.2.0.1.0 - Production on Tue Apr 7 15:36:24 2026
+
+Copyright (c) 1982, 2005, Oracle.  All rights reserved.
+
+SQL> conn vijay/abc
+Connected.
+SQL> create table empc(empno number(5),ename varchar(30),job varchar(40),deptno number(5));
+
+Table created.
+
+SQL> insert into empc(&empno,'&ename','&job',&deptno);
+Enter value for empno: 7369
+Enter value for ename: SMITH
+Enter value for job: CLERK
+Enter value for deptno: 20
+old   1: insert into empc(&empno,'&ename','&job',&deptno)
+new   1: insert into empc(7369,'SMITH','CLERK',20)
+insert into empc(7369,'SMITH','CLERK',20)
+                 *
+ERROR at line 1:
+ORA-00928: missing SELECT keyword
+
+
+SQL> insert into empc values(&empno,'&ename','&job',&deptno);
+Enter value for empno: 7369
+Enter value for ename: SMITH
+Enter value for job: CLERK
+Enter value for deptno: 20
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7369,'SMITH','CLERK',20)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7499
+Enter value for ename: ALLEN
+Enter value for job: SALESMAN
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7499,'ALLEN','SALESMAN',30)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7521
+Enter value for ename: WARD
+Enter value for job: SALESMAN
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7521,'WARD','SALESMAN',30)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7566
+Enter value for ename: JONES
+Enter value for job: MANAGER
+Enter value for deptno: 20
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7566,'JONES','MANAGER',20)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7654
+Enter value for ename: MARTIN
+Enter value for job: SALESMAN
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7654,'MARTIN','SALESMAN',30)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7698
+Enter value for ename: BLAKE
+Enter value for job: MANAGER
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7698,'BLAKE','MANAGER',30)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7782
+Enter value for ename: CLORK
+Enter value for job: MANAGER
+Enter value for deptno: 10
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7782,'CLORK','MANAGER',10)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7788
+Enter value for ename: SCOTT
+Enter value for job: ANALYST
+Enter value for deptno: 20
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7788,'SCOTT','ANALYST',20)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7839
+Enter value for ename: LEO
+Enter value for job: PRESIDENT
+Enter value for deptno: 10
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7839,'LEO','PRESIDENT',10)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7844
+Enter value for ename: TURNER
+Enter value for job: SALESMAN
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7844,'TURNER','SALESMAN',30)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7876
+Enter value for ename: RAJU
+Enter value for job: CLERK
+Enter value for deptno: 20
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7876,'RAJU','CLERK',20)
+
+1 row created.
+
+SQL> /
+Enter value for empno: 7900
+Enter value for ename: JAMES
+Enter value for job: CLERK
+Enter value for deptno: 30
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7900,'JAMES','CLERK',30)
+
+1 row created.
+
+SQL> 7902
+SP2-0226: Invalid line number
+SQL> FORD
+SP2-0042: unknown command "FORD" - rest of line ignored.
+SQL> ANALYST
+SP2-0042: unknown command "ANALYST" - rest of line ignored.
+SQL> 20
+SP2-0226: Invalid line number
+SQL> /
+Enter value for empno: 7934
+Enter value for ename: JEEVAN
+Enter value for job: CLERK
+Enter value for deptno: 10
+old   1: insert into empc values(&empno,'&ename','&job',&deptno)
+new   1: insert into empc values(7934,'JEEVAN','CLERK',10)
+
+1 row created.
+
+SQL> SELECT * FROM EMPC;
+
+     EMPNO ENAME
+---------- ------------------------------
+JOB                                          DEPTNO
+---------------------------------------- ----------
+      7369 SMITH
+CLERK                                            20
+
+      7499 ALLEN
+SALESMAN                                         30
+
+      7521 WARD
+SALESMAN                                         30
+
+
+     EMPNO ENAME
+---------- ------------------------------
+JOB                                          DEPTNO
+---------------------------------------- ----------
+      7566 JONES
+MANAGER                                          20
+
+      7654 MARTIN
+SALESMAN                                         30
+
+      7698 BLAKE
+MANAGER                                          30
+
+
+     EMPNO ENAME
+---------- ------------------------------
+JOB                                          DEPTNO
+---------------------------------------- ----------
+      7782 CLORK
+MANAGER                                          10
+
+      7788 SCOTT
+ANALYST                                          20
+
+      7839 LEO
+PRESIDENT                                        10
+
+
+     EMPNO ENAME
+---------- ------------------------------
+JOB                                          DEPTNO
+---------------------------------------- ----------
+      7844 TURNER
+SALESMAN                                         30
+
+      7876 RAJU
+CLERK                                            20
+
+      7900 JAMES
+CLERK                                            30
+
+
+     EMPNO ENAME
+---------- ------------------------------
+JOB                                          DEPTNO
+---------------------------------------- ----------
+      7934 JEEVAN
+CLERK                                            10
+
+
+13 rows selected.
+
+SQL> SET PAGESIZE300 LINESIZE300;
+SQL> SELECT * FROM EMPC;
+
+     EMPNO ENAME                          JOB                                          DEPTNO
+---------- ------------------------------ ---------------------------------------- ----------
+      7369 SMITH                          CLERK                                            20
+      7499 ALLEN                          SALESMAN                                         30
+      7521 WARD                           SALESMAN                                         30
+      7566 JONES                          MANAGER                                          20
+      7654 MARTIN                         SALESMAN                                         30
+      7698 BLAKE                          MANAGER                                          30
+      7782 CLORK                          MANAGER                                          10
+      7788 SCOTT                          ANALYST                                          20
+      7839 LEO                            PRESIDENT                                        10
+      7844 TURNER                         SALESMAN                                         30
+      7876 RAJU                           CLERK                                            20
+      7900 JAMES                          CLERK                                            30
+      7934 JEEVAN                         CLERK                                            10
+
+13 rows selected.
+
+SQL> CREATE TABLE STU(s_id number,name varchar(30),age number);
+
+Table created.
+
+SQL> insert into stu values(&s_id.'&name','&age');
+Enter value for s_id: 1
+Enter value for name: KALIA
+Enter value for age: 21
+old   1: insert into stu values(&s_id.'&name','&age')
+new   1: insert into stu values(1'KALIA','21')
+insert into stu values(1'KALIA','21')
+                        *
+ERROR at line 1:
+ORA-00917: missing comma
+
+
+SQL> insert into stu values(&s_id,'&name','&age');
+Enter value for s_id: 21
+Enter value for name: KALIA
+Enter value for age:
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(21,'KALIA','')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 1
+Enter value for name: KALIA
+Enter value for age: 21
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(1,'KALIA','21')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 2
+Enter value for name: CHUTKI
+Enter value for age: 21
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(2,'CHUTKI','21')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 3
+Enter value for name: RAJU
+Enter value for age: 11
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(3,'RAJU','11')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 4
+Enter value for name: SMITH
+Enter value for age: 35
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(4,'SMITH','35')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 5
+Enter value for name: LEO
+Enter value for age: 65
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(5,'LEO','65')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: JEEVAN
+Enter value for name: 17
+Enter value for age: 7
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(JEEVAN,'17','7')
+insert into stu values(JEEVAN,'17','7')
+                       *
+ERROR at line 1:
+ORA-00984: column not allowed here
+
+
+SQL> /
+Enter value for s_id: 7
+Enter value for name: JIO
+Enter value for age: 37
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(7,'JIO','37')
+
+1 row created.
+
+SQL> /
+Enter value for s_id: 8
+Enter value for name: DIO
+Enter value for age: 37
+old   1: insert into stu values(&s_id,'&name','&age')
+new   1: insert into stu values(8,'DIO','37')
+
+1 row created.
+
+SQL> SELECT * FROM STU;
+
+      S_ID NAME                                  AGE
+---------- ------------------------------ ----------
+        21 KALIA
+         1 KALIA                                  21
+         2 CHUTKI                                 21
+         3 RAJU                                   11
+         4 SMITH                                  35
+         5 LEO                                    65
+         7 JIO                                    37
+         8 DIO                                    37
+
+8 rows selected.
+
+SQL> DROP TABLE STU WHERE S_ID = 21;
+DROP TABLE STU WHERE S_ID = 21
+               *
+ERROR at line 1:
+ORA-00933: SQL command not properly ended
+
+
+SQL> DELETE FROM STU WHERE S_ID = 21;
+
+1 row deleted.
+
+SQL> SELECT * FROM STU;
+
+      S_ID NAME                                  AGE
+---------- ------------------------------ ----------
+         1 KALIA                                  21
+         2 CHUTKI                                 21
+         3 RAJU                                   11
+         4 SMITH                                  35
+         5 LEO                                    65
+         7 JIO                                    37
+         8 DIO                                    37
+
+7 rows selected.
+
+SQL>
